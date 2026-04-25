@@ -1,0 +1,10 @@
+{
+  "stepFiles": [
+    "/vercel/share/v0-project/node_modules/workflow/dist/stdlib.js",
+    "/vercel/share/v0-project/workflows/notification/steps.ts"
+  ],
+  "workflowFiles": [
+    "/vercel/share/v0-project/workflows/notification/index.ts"
+  ],
+  "serdeOnlyFiles": []
+}

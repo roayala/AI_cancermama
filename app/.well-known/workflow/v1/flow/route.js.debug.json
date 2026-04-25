@@ -1,0 +1,6 @@
+{
+  "workflowFiles": [
+    "/vercel/share/v0-project/workflows/notification/index.ts"
+  ],
+  "serdeOnlyFiles": []
+}

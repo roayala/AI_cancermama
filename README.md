@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AnaLuz
 
-## Getting Started
+> An AI agent that walks alongside breast cancer patients from the moment their results are ready — so that no result goes unnoticed and no patient is left waiting.
+> -3
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## The Problem
+
+When a breast cancer lab result is uploaded to the clinic's system, patients are often not notified promptly. Days can pass before a patient learns their results are available. In oncology, this delay is not a minor inconvenience — it can allow the disease to progress to a less treatable stage.
+
+The current process depends on manual follow-up by clinic staff, which is inconsistent and prone to gaps.
+
+---
+
+## The Solution
+
+**AnaLuz** is an autonomous agent that:
+
+1. **Monitors** the lab results database for new results
+2. **Notifies** patients via SMS the moment a result is uploaded — with a calm, human tone
+3. **Follows up** automatically if the patient doesn't respond within 24–48 hours
+4. **Escalates** to clinic staff if the patient remains unreachable
+5. **Supports** patients post-consultation with an informational chatbot
+
+AnaLuz never delivers or interprets the actual medical result. That responsibility stays with the doctor. AnaLuz's role is to make sure the patient shows up.
+
+---
+
+## Agent Flow
+
+```
+Lab uploads result to database
+           ↓
+AnaLuz detects new result
+           ↓
+SMS sent to patient:
+"Your results are ready. Please schedule
+ your appointment with your doctor."
+           ↓
+Did the patient respond or schedule?
+  ├─ YES → loop closes ✓
+  └─ NO (24h) → follow-up SMS sent
+               └─ NO (48h) → clinic staff notified
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## The Chatbot
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+After the doctor delivers the results in person, they can refer the patient to AnaLuz for ongoing support.
 
-## Learn More
+**AnaLuz can:**
+- Explain what next steps in treatment typically look like
+- Answer common questions about breast cancer care
+- Provide resources and guidance in a calm, empathetic tone
+- Help patients feel informed and less alone
 
-To learn more about Next.js, take a look at the following resources:
+**AnaLuz never:**
+- Delivers or interprets the patient's actual result
+- Diagnoses or suggests a diagnosis
+- Generates fear or unnecessary urgency
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Tone Principles
 
-## Deploy on Vercel
+Every message — SMS or chat — follows these principles:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Calm**: no alarmist language
+- **Clear**: simple words, no medical jargon
+- **Human**: warm, not robotic
+- **Respectful**: the patient is going through something hard
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js (deployed on Vercel) |
+| Agent orchestration | Vercel AI SDK |
+| Scheduled monitoring | Vercel Cron Jobs |
+| SMS delivery | Twilio |
+| Database | TBD |
+| Language model | Claude (Anthropic) |
+
+---
+
+## Why This Matters
+
+Early detection is the single most important factor in breast cancer survival rates. A system that ensures every patient is notified — every time, on time — is not a convenience. It's a clinical safety net.
+
+AnaLuz doesn't replace doctors. It makes sure patients reach them.

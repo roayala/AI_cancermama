@@ -1,11 +1,6 @@
 {
   "version": "1.0.0",
   "steps": {
-    "node_modules/workflow/dist/stdlib.js": {
-      "fetch": {
-        "stepId": "step//workflow@4.2.4//fetch"
-      }
-    },
     "workflows/notification/steps.ts": {
       "checkAcknowledged": {
         "stepId": "step//./workflows/notification/steps//checkAcknowledged"
@@ -21,6 +16,11 @@
       },
       "sendInitialSMS": {
         "stepId": "step//./workflows/notification/steps//sendInitialSMS"
+      }
+    },
+    "node_modules/workflow/dist/stdlib.js": {
+      "fetch": {
+        "stepId": "step//workflow@4.2.4//fetch"
       }
     },
     "node_modules/workflow/dist/internal/builtins.js": {

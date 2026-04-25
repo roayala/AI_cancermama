@@ -1,9 +1,11 @@
-import { createGateway } from "@ai-sdk/gateway";
-import { streamText, convertToModelMessages } from "ai";
+import { streamText, convertToModelMessages, type UIMessage } from "ai";
 
-const gateway = createGateway({
-  apiKey: process.env.GATEWAY_API_KEY,
-});
+// The Vercel AI Gateway integration provisions GATEWAY_API_KEY,
+// but the AI SDK looks for AI_GATEWAY_API_KEY. Alias it so the
+// default gateway provider can authenticate.
+if (!process.env.AI_GATEWAY_API_KEY && process.env.GATEWAY_API_KEY) {
+  process.env.AI_GATEWAY_API_KEY = process.env.GATEWAY_API_KEY;
+}
 
 const SYSTEM_PROMPT = `Eres AnaLuz, una acompañante de salud cálida y empática para pacientes de cáncer de mama.
 
@@ -26,13 +28,25 @@ Tono:
 - Siempre termina con una nota de aliento o un próximo paso concreto`;
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  try {
+    const { messages }: { messages: UIMessage[] } = await req.json();
 
-  const result = streamText({
-    model: gateway("anthropic/claude-sonnet-4.6"),
-    system: SYSTEM_PROMPT,
-    messages: await convertToModelMessages(messages),
-  });
+    const result = streamText({
+      // Zero-config via the Vercel AI Gateway — just pass the model id
+      model: "anthropic/claude-sonnet-4.5",
+      system: SYSTEM_PROMPT,
+      messages: await convertToModelMessages(messages),
+    });
 
-  return result.toUIMessageStreamResponse();
+    return result.toUIMessageStreamResponse();
+  } catch (err) {
+    console.error("[v0] /api/chat error:", err);
+    return new Response(
+      JSON.stringify({
+        error:
+          err instanceof Error ? err.message : "Unknown error in chat route",
+      }),
+      { status: 500, headers: { "content-type": "application/json" } },
+    );
+  }
 }

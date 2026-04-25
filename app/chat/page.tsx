@@ -4,6 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const transport = new DefaultChatTransport({ api: "/api/chat" });
 
@@ -25,37 +26,92 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen bg-rose-50 flex flex-col">
-      <header className="bg-white border-b border-rose-100 px-6 py-3 flex items-center gap-3">
-        <Image
-          src="/analuz_logo.png"
-          alt="AnaLuz"
-          width={100}
-          height={44}
-          className="object-contain"
-        />
-        <p className="text-xs text-gray-400">Tu acompañante de salud</p>
+    <div className="relative flex min-h-screen flex-col bg-background text-foreground">
+      {/* Ambient color blobs to match the home palette */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-32 -left-24 h-72 w-72 rounded-full bg-primary/15 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-40 -right-32 h-72 w-72 rounded-full bg-secondary/40 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-32 right-1/3 h-80 w-80 rounded-full bg-accent/10 blur-3xl"
+      />
+
+      <header className="relative z-10 border-b border-border bg-card/80 px-4 py-3 backdrop-blur sm:px-6">
+        <div className="mx-auto flex max-w-2xl items-center justify-between gap-3">
+          <Link
+            href="/"
+            aria-label="AnaLuz - Inicio"
+            className="flex items-center gap-3 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+          >
+            <Image
+              src="/analuz_logo.png"
+              alt="AnaLuz"
+              width={240}
+              height={96}
+              priority
+              className="h-14 w-auto object-contain sm:h-16"
+            />
+            <span className="hidden text-xs text-muted-foreground sm:inline">
+              Tu acompañante de salud
+            </span>
+          </Link>
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1 text-xs text-muted-foreground">
+            <span
+              aria-hidden
+              className="h-2 w-2 rounded-full bg-accent"
+            />
+            En línea
+          </span>
+        </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4 max-w-2xl w-full mx-auto">
+      <div className="relative z-10 mx-auto w-full max-w-2xl flex-1 space-y-4 overflow-y-auto px-4 py-6">
         {messages.length === 0 && (
-          <div className="text-center space-y-2 py-12">
-            <p className="text-rose-300 text-4xl">💗</p>
-            <p className="text-gray-500 text-sm">
-              Hola, soy AnaLuz. Estoy aquí para acompañarte y responder tus preguntas.
-            </p>
+          <div className="flex flex-col items-center gap-4 py-12 text-center">
+            <span
+              aria-hidden
+              className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-6 w-6"
+              >
+                <path d="M12 21s-7.5-4.7-9.6-9.2C1 8.6 2.7 5.5 5.7 4.9c1.9-.4 3.7.4 4.8 1.9.6.7 1 1.5 1.5 2.4.5-.9.9-1.7 1.5-2.4 1.1-1.5 2.9-2.3 4.8-1.9 3 .6 4.7 3.7 3.3 6.9C19.5 16.3 12 21 12 21Z" />
+              </svg>
+            </span>
+            <div className="space-y-1">
+              <p className="font-serif text-xl text-[color:var(--primary-hover)]">
+                Hola, soy AnaLuz
+              </p>
+              <p className="mx-auto max-w-sm text-sm leading-relaxed text-muted-foreground text-pretty">
+                Estoy aquí para acompañarte y responder tus preguntas con
+                calma y cuidado.
+              </p>
+            </div>
           </div>
         )}
 
         {messages.map((m) => (
-          <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-            <div className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-              m.role === "user"
-                ? "bg-rose-600 text-white rounded-br-sm"
-                : "bg-white text-gray-700 shadow-sm border border-rose-50 rounded-bl-sm"
-            }`}>
+          <div
+            key={m.id}
+            className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+          >
+            <div
+              className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${
+                m.role === "user"
+                  ? "rounded-br-sm bg-primary text-primary-foreground"
+                  : "rounded-bl-sm border border-border bg-card text-foreground"
+              }`}
+            >
               {m.parts.map((part, i) =>
-                part.type === "text" ? <span key={i}>{part.text}</span> : null
+                part.type === "text" ? <span key={i}>{part.text}</span> : null,
               )}
             </div>
           </div>
@@ -63,11 +119,11 @@ export default function ChatPage() {
 
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm border border-rose-50">
+            <div className="rounded-2xl rounded-bl-sm border border-border bg-card px-4 py-3 shadow-sm">
               <div className="flex gap-1">
-                <span className="w-2 h-2 bg-rose-300 rounded-full animate-bounce [animation-delay:0ms]" />
-                <span className="w-2 h-2 bg-rose-300 rounded-full animate-bounce [animation-delay:150ms]" />
-                <span className="w-2 h-2 bg-rose-300 rounded-full animate-bounce [animation-delay:300ms]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-primary/60 [animation-delay:0ms]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-secondary [animation-delay:150ms]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-accent/70 [animation-delay:300ms]" />
               </div>
             </div>
           </div>
@@ -76,8 +132,11 @@ export default function ChatPage() {
         <div ref={bottomRef} />
       </div>
 
-      <div className="bg-white border-t border-rose-100 px-4 py-4">
-        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto flex gap-3 items-end">
+      <div className="relative z-10 border-t border-border bg-card/80 px-4 py-4 backdrop-blur">
+        <form
+          onSubmit={handleSubmit}
+          className="mx-auto flex max-w-2xl items-end gap-3"
+        >
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -89,17 +148,17 @@ export default function ChatPage() {
             }}
             placeholder="Escribe tu pregunta..."
             rows={1}
-            className="flex-1 resize-none rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:border-rose-300 focus:ring-1 focus:ring-rose-200"
+            className="flex-1 resize-none rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className="bg-rose-600 hover:bg-rose-700 disabled:bg-rose-200 text-white rounded-xl px-4 py-3 text-sm font-medium transition-colors"
+            className="rounded-xl bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-[color:var(--primary-hover)] disabled:cursor-not-allowed disabled:bg-secondary disabled:text-[color:var(--primary-hover)]/60"
           >
             Enviar
           </button>
         </form>
-        <p className="text-center text-xs text-gray-300 mt-2">
+        <p className="mt-2 text-center text-xs text-muted-foreground/80">
           AnaLuz no entrega ni interpreta resultados médicos.
         </p>
       </div>

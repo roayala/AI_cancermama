@@ -1,26 +1,62 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* AnaLuz palette */
+  --background: #fff8f3;          /* warm off-white */
+  --foreground: #2e2e2e;          /* charcoal */
+
+  --card: #ffffff;                /* card background */
+  --card-foreground: #2e2e2e;
+
+  --muted: #f6c7b6;               /* warm peach (secondary) */
+  --muted-foreground: #6f6a67;    /* warm gray */
+
+  --primary: #d96c8a;             /* soft rose */
+  --primary-hover: #a83f62;       /* deep rose */
+  --primary-foreground: #ffffff;
+
+  --secondary: #f6c7b6;           /* warm peach */
+  --secondary-foreground: #2e2e2e;
+
+  --accent: #4f9a94;              /* calm teal */
+  --accent-hover: #3d7d78;
+  --accent-foreground: #ffffff;
+
+  --border: #ead7d2;              /* light rose-gray */
+  --ring: #d96c8a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-cormorant);
+  --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }

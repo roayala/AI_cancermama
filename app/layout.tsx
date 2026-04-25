@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Cormorant_Garamond, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+});
+
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
@@ -13,8 +19,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AnaLuz",
-  description: "Tu acompañante en cada paso del camino.",
+  title: "AnaLuz — Tu acompañante en cada paso del camino",
+  description:
+    "AnaLuz es un acompañante digital para pacientes oncológicas. Te apoya en cada etapa, sin reemplazar a tu médico.",
 };
 
 export default function RootLayout({
@@ -24,8 +31,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="es"
+      className={`${inter.variable} ${cormorant.variable} ${geistMono.variable} h-full antialiased bg-background`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

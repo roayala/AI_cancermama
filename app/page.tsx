@@ -2,12 +2,25 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ChevronDown } from "lucide-react";
+import {
+  ChevronDown,
+  Compass,
+  HelpCircle,
+  BookOpen,
+  Hand,
+  Activity,
+  CalendarCheck,
+  Sparkles,
+  ArrowRight,
+  ShieldAlert,
+} from "lucide-react";
 
-type ProtocolGroup = {
+type CardItem = { name: string; text: string };
+type InfoCard = {
   title: string;
-  intro?: string;
-  items: { name: string; text: string }[];
+  intro: string;
+  items: CardItem[];
+  footer?: string;
 };
 
 const content = {
@@ -45,97 +58,174 @@ const content = {
         text: "Después de la consulta, la paciente puede chatear con AnaLuz.",
       },
     ],
-    protocols: "Protocolos de tratamiento",
-    protocolsSub:
-      "Una guía clara sobre los tratamientos para el cáncer de mama según las guías ESMO, NCCN y el Consenso Mexicano.",
-    protocolsToggleOpen: "Ver protocolos",
-    protocolsToggleClose: "Ocultar protocolos",
-    protocolsIntro:
-      "Los protocolos se eligen de forma multidisciplinaria según el subtipo molecular, el estadio clínico (I-IV) y el estado general de la paciente. Se dividen en tratamientos locales y sistémicos.",
-    protocolGroups: [
+
+    // Sección: Después de la consulta
+    afterTitle: "Después de la consulta",
+    afterIntro:
+      "Salir del consultorio con un diagnóstico o un resultado anormal puede sentirse abrumador. Aquí encontrarás información clara para entender lo que sigue, resolver dudas comunes y apoyarte en fuentes confiables — siempre de la mano de tu médico.",
+    afterWarningTitle: "Una nota importante",
+    afterWarning:
+      "AnaLuz ofrece información general y acompañamiento emocional. No diagnostica, no prescribe y no reemplaza la opinión de tu equipo médico. Cualquier decisión clínica debe tomarse en consulta con tu oncólogo o ginecólogo.",
+    afterCards: [
       {
-        title: "Tratamientos locales",
-        intro: "Para el control directo del tumor.",
+        title: "Entendiendo los siguientes pasos",
+        intro:
+          "Después de un resultado anormal o un diagnóstico, el camino se vuelve más claro cuando sabes qué esperar.",
         items: [
           {
-            name: "Cirugía",
-            text: "Base del tratamiento: conservadora (tumorectomía, lumpectomía) o mastectomía total/radical modificada.",
+            name: "Estudios complementarios",
+            text: "Tu médico puede pedir ultrasonido, resonancia o una biopsia para confirmar y caracterizar el hallazgo. Suele tomar de 1 a 3 semanas tener todos los resultados.",
           },
           {
-            name: "Biopsia de ganglio centinela",
-            text: "Método de elección para evaluar la axila en estadios iniciales (I-II), evitando vaciamientos innecesarios.",
+            name: "Comité multidisciplinario",
+            text: "Tu caso se discute en un equipo formado por cirujano oncólogo, oncólogo médico, radioncólogo, patólogo y radiólogo. Juntos diseñan un plan a tu medida.",
           },
           {
-            name: "Radioterapia",
-            text: "Frecuente tras cirugía conservadora para destruir células cancerosas remanentes.",
+            name: "Plan personalizado",
+            text: "El tratamiento depende del subtipo molecular, el estadio y tu salud general. No hay dos planes iguales — el tuyo se construye específicamente para ti.",
           },
           {
-            name: "Cirugía oncoplástica",
-            text: "Combina técnicas oncológicas con reconstrucción mamaria simultánea.",
+            name: "Tu red de apoyo",
+            text: "Además del equipo médico, tendrás acceso a enfermería oncológica, trabajo social, nutrición y psicooncología. Apóyate en todos ellos.",
           },
         ],
       },
       {
-        title: "Tratamientos sistémicos",
-        intro: "Actúan en todo el cuerpo para un cuidado integral.",
+        title: "Preguntas frecuentes",
+        intro: "Las dudas más comunes después de un diagnóstico inicial.",
         items: [
           {
-            name: "Quimioterapia",
-            text: "Medicamentos citotóxicos para etapas avanzadas o antes/después de la cirugía.",
+            name: "¿Un resultado anormal significa cáncer?",
+            text: "No necesariamente. Muchos hallazgos resultan ser benignos (quistes, fibroadenomas, calcificaciones). Solo la biopsia confirma el diagnóstico.",
           },
           {
-            name: "Terapia endocrina/hormonal",
-            text: "Para tumores con receptores hormonales positivos (ER+/PgR+): tamoxifeno, inhibidores de aromatasa.",
+            name: "¿Cuánto tarda confirmarse un diagnóstico?",
+            text: "Generalmente entre 7 y 14 días después de la biopsia, dependiendo del laboratorio y de los marcadores que se necesiten estudiar.",
           },
           {
-            name: "Terapias dirigidas",
-            text: "Anti-HER2 (ej. trastuzumab) para tumores HER2 positivos y otros blancos moleculares.",
+            name: "¿Puedo seguir trabajando durante el tratamiento?",
+            text: "Muchas mujeres lo hacen, especialmente con tratamientos hormonales o radioterapia. La quimioterapia suele requerir más descanso. Habla con tu equipo.",
           },
           {
-            name: "Inmunoterapia",
-            text: "Apoya al sistema inmune, a menudo combinada con quimioterapia en triple negativo.",
+            name: "¿Voy a perder el cabello?",
+            text: "Solo algunos tipos de quimioterapia lo causan. La hormonoterapia, las terapias dirigidas y la radioterapia mamaria normalmente no provocan caída del cabello.",
+          },
+          {
+            name: "¿Cuánto cuesta el tratamiento?",
+            text: "Varía mucho según institución y cobertura. En México existen opciones públicas (IMSS, ISSSTE, INCan, FUCAM) y privadas. Trabajo social puede orientarte.",
           },
         ],
       },
       {
-        title: "Secuencia del protocolo",
-        intro: "Decidida en comités multidisciplinarios.",
+        title: "Guía confiable",
+        intro:
+          "Buscar información en internet es natural, pero no toda fuente es confiable. Estas instituciones publican información validada por especialistas.",
         items: [
           {
-            name: "Neoadyuvancia",
-            text: "Tratamiento antes de la cirugía para reducir el tamaño del tumor.",
+            name: "En México",
+            text: "INCan (Instituto Nacional de Cancerología), FUCAM, Salvati y la Asociación Mexicana de Lucha contra el Cáncer ofrecen guías para pacientes en español.",
           },
           {
-            name: "Adyuvancia",
-            text: "Tratamiento complementario después de la cirugía para reducir el riesgo de recaída.",
+            name: "Sociedades médicas",
+            text: "El Consenso Mexicano sobre Cáncer de Mama (revisión 2025), NCCN Guidelines for Patients y ESMO Patient Guides están disponibles de forma gratuita en línea.",
+          },
+          {
+            name: "Internacionales",
+            text: "American Cancer Society, Breastcancer.org y Susan G. Komen tienen secciones en español con información actualizada y revisada por oncólogos.",
+          },
+          {
+            name: "Cómo identificar información confiable",
+            text: "Busca fechas recientes (2 años o menos), autoría médica visible, fuentes citadas y evita sitios que prometan curas milagrosas o vendan productos.",
           },
         ],
+      },
+    ] as InfoCard[],
+
+    // Sección: Preguntas que puedes hacerle a AnaLuz
+    askTitle: "Preguntas que puedes hacerle a AnaLuz",
+    askSub:
+      "Toca cualquiera para abrir el chat. AnaLuz responde con calidez y referencias.",
+    askGoToChat: "Hablar con AnaLuz",
+    askExamples: [
+      "¿Qué significa que mi resultado sea BIRADS 4?",
+      "¿Qué preguntas debo hacerle a mi oncólogo en la primera consulta?",
+      "¿Cómo me preparo emocionalmente antes de una biopsia?",
+      "¿Qué efectos secundarios podría tener la quimioterapia?",
+      "¿Cómo cuido mi salud mental durante el tratamiento?",
+      "¿Dónde puedo encontrar grupos de apoyo cerca de mí?",
+    ],
+
+    // Sección: Detección oportuna
+    detectionTitle: "Sobre la detección oportuna",
+    detectionIntro:
+      "La detección temprana es la herramienta más poderosa que tenemos. Tres hábitos sencillos que pueden hacer la diferencia.",
+    detectionCards: [
+      {
+        title: "Autoexploración mensual",
+        intro:
+          "Conocer tu cuerpo es el primer paso. Hacerlo cada mes te permite notar cambios pronto.",
+        items: [
+          {
+            name: "Cuándo hacerla",
+            text: "Entre los días 7 y 10 después del primer día de tu periodo, cuando los senos están menos sensibles. Si ya no menstrúas, elige el mismo día de cada mes.",
+          },
+          {
+            name: "Cómo hacerla",
+            text: "En tres momentos: frente al espejo observando forma y piel, acostada palpando con movimientos circulares, y en la regadera con la piel enjabonada.",
+          },
+          {
+            name: "Qué buscar",
+            text: "Bultos o engrosamientos, cambios en la piel (hoyuelos, enrojecimiento, descamación), secreción del pezón, retracción del pezón o asimetría reciente.",
+          },
+        ],
+        footer:
+          "Si encuentras algo distinto, no entres en pánico — la mayoría de los hallazgos son benignos. Pero sí agenda una consulta pronto.",
       },
       {
-        title: "Novedades 2026",
-        intro: "Lo más reciente en oncología mamaria.",
+        title: "Mastografía",
+        intro:
+          "Es el estudio de imagen más efectivo para detectar el cáncer de mama antes de que se sienta.",
         items: [
           {
-            name: "Medicina de precisión",
-            text: "Guía molecular para tratamientos personalizados según cada paciente.",
+            name: "A partir de los 40 años",
+            text: "La recomendación general en México es realizarla cada 1 o 2 años entre los 40 y los 49 años, y cada 1 a 2 años a partir de los 50. Tu médico puede ajustar la frecuencia.",
           },
           {
-            name: "Inteligencia artificial",
-            text: "Modelos de IA que evalúan el riesgo a 5 años a partir de mastografías.",
+            name: "Si hay antecedentes familiares",
+            text: "Si tu madre, hermana o hija tuvo cáncer de mama, comienza 10 años antes de la edad de diagnóstico de tu familiar — y nunca antes de los 30. Considera asesoría genética.",
           },
           {
-            name: "Nuevas combinaciones",
-            text: "Sacituzumab govitecan + pembrolizumab como opción preferida en triple negativo metastásico.",
+            name: "Qué esperar",
+            text: "El estudio dura entre 15 y 20 minutos. Hay una compresión breve de cada seno (incómoda, no dolorosa) y los resultados suelen llegar en 5 a 10 días.",
+          },
+        ],
+        footer:
+          "Una mastografía con clasificación BIRADS 1 o 2 es normal. BIRADS 3 requiere seguimiento, y BIRADS 4 o 5 indica que hay que estudiar más a fondo.",
+      },
+      {
+        title: "Seguimiento continuo",
+        intro:
+          "Después de un tratamiento o un hallazgo previo, la vigilancia regular cuida tu bienestar a largo plazo.",
+        items: [
+          {
+            name: "Primeros 3 años",
+            text: "Consultas con tu oncólogo cada 3 a 6 meses. Es el periodo en que se vigila más de cerca cualquier signo de recurrencia.",
           },
           {
-            name: "Desescalada",
-            text: "En posmenopáusicas con tumores HR+/HER2- pequeños se considera omitir la biopsia de ganglio centinela.",
+            name: "Años 4 y 5",
+            text: "Consultas cada 6 a 12 meses, con mastografía anual del seno conservado y del contralateral. Marcadores tumorales solo si tu médico los indica.",
+          },
+          {
+            name: "A partir del año 5",
+            text: "Consultas anuales y mastografía anual de por vida. Cuida también huesos, corazón y salud mental — efectos a largo plazo de algunos tratamientos.",
+          },
+          {
+            name: "Hábitos protectores",
+            text: "Actividad física moderada, alimentación rica en vegetales, peso saludable, limitar alcohol y no fumar reducen el riesgo de recurrencia.",
           },
         ],
       },
-    ] as ProtocolGroup[],
-    protocolsDisclaimer:
-      "Cada caso debe ser evaluado por un oncólogo para determinar el protocolo adecuado.",
+    ] as InfoCard[],
   },
   en: {
     tagline: "Your companion at every step of the journey.",
@@ -171,107 +261,179 @@ const content = {
         text: "After the consultation, the patient can chat with AnaLuz.",
       },
     ],
-    protocols: "Treatment protocols",
-    protocolsSub:
-      "A clear guide to breast cancer treatment based on ESMO, NCCN and the Mexican Consensus guidelines.",
-    protocolsToggleOpen: "View protocols",
-    protocolsToggleClose: "Hide protocols",
-    protocolsIntro:
-      "Protocols are chosen by a multidisciplinary team based on molecular subtype, clinical stage (I-IV) and the patient's overall condition. They are grouped into local and systemic treatments.",
-    protocolGroups: [
+
+    afterTitle: "After the consultation",
+    afterIntro:
+      "Leaving the doctor's office with an abnormal result or a diagnosis can feel overwhelming. Here you'll find clear information to understand what comes next, resolve common questions, and lean on trusted sources — always alongside your doctor.",
+    afterWarningTitle: "An important note",
+    afterWarning:
+      "AnaLuz provides general information and emotional companionship. She does not diagnose, prescribe, or replace your medical team's opinion. Every clinical decision must be made with your oncologist or gynecologist.",
+    afterCards: [
       {
-        title: "Local treatments",
-        intro: "Direct control of the tumor.",
+        title: "Understanding the next steps",
+        intro:
+          "After an abnormal result or a diagnosis, the path becomes clearer when you know what to expect.",
         items: [
           {
-            name: "Surgery",
-            text: "Cornerstone of treatment: breast-conserving (lumpectomy) or total/modified radical mastectomy.",
+            name: "Additional studies",
+            text: "Your doctor may order an ultrasound, MRI, or biopsy to confirm and characterize the finding. It usually takes 1 to 3 weeks to have all results.",
           },
           {
-            name: "Sentinel lymph node biopsy",
-            text: "Preferred method to assess the axilla in early stages (I-II), avoiding unnecessary dissection.",
+            name: "Multidisciplinary committee",
+            text: "Your case is discussed by a team of surgical oncologist, medical oncologist, radiation oncologist, pathologist and radiologist. Together they design a plan tailored to you.",
           },
           {
-            name: "Radiotherapy",
-            text: "Often used after conservative surgery to destroy remaining cancer cells.",
+            name: "Personalized plan",
+            text: "Treatment depends on molecular subtype, stage, and your overall health. No two plans are alike — yours is built specifically for you.",
           },
           {
-            name: "Oncoplastic surgery",
-            text: "Combines oncologic techniques with simultaneous breast reconstruction.",
+            name: "Your support network",
+            text: "Beyond the medical team, you'll have access to oncology nursing, social work, nutrition, and psycho-oncology. Lean on all of them.",
           },
         ],
       },
       {
-        title: "Systemic treatments",
-        intro: "Whole-body therapy for integral care.",
+        title: "Frequently asked questions",
+        intro: "The most common doubts after an initial diagnosis.",
         items: [
           {
-            name: "Chemotherapy",
-            text: "Cytotoxic drugs for advanced stages or before/after surgery.",
+            name: "Does an abnormal result mean cancer?",
+            text: "Not necessarily. Many findings turn out to be benign (cysts, fibroadenomas, calcifications). Only a biopsy confirms a diagnosis.",
           },
           {
-            name: "Endocrine / hormone therapy",
-            text: "For hormone-receptor positive tumors (ER+/PgR+): tamoxifen, aromatase inhibitors.",
+            name: "How long does it take to confirm a diagnosis?",
+            text: "Usually 7 to 14 days after the biopsy, depending on the lab and the markers that need to be studied.",
           },
           {
-            name: "Targeted therapies",
-            text: "Anti-HER2 (e.g. trastuzumab) for HER2-positive tumors and other molecular targets.",
+            name: "Can I keep working during treatment?",
+            text: "Many women do, especially during hormone therapy or radiation. Chemotherapy usually requires more rest. Talk to your team.",
           },
           {
-            name: "Immunotherapy",
-            text: "Supports the immune system, often combined with chemo in triple-negative cases.",
+            name: "Will I lose my hair?",
+            text: "Only some chemotherapies cause this. Hormone therapy, targeted therapies, and breast radiation usually do not cause hair loss.",
+          },
+          {
+            name: "How much does treatment cost?",
+            text: "It varies by institution and coverage. In Mexico there are public options (IMSS, ISSSTE, INCan, FUCAM) and private ones. Social work can guide you.",
           },
         ],
       },
       {
-        title: "Protocol sequence",
-        intro: "Decided in multidisciplinary committees.",
+        title: "Trusted guide",
+        intro:
+          "Searching the internet is natural, but not every source is reliable. These institutions publish information validated by specialists.",
         items: [
           {
-            name: "Neoadjuvant",
-            text: "Treatment before surgery to shrink the tumor.",
+            name: "In Mexico",
+            text: "INCan, FUCAM, Salvati, and the Mexican Association for the Fight Against Cancer offer patient guides in Spanish.",
           },
           {
-            name: "Adjuvant",
-            text: "Treatment after surgery to reduce the risk of recurrence.",
+            name: "Medical societies",
+            text: "The Mexican Consensus on Breast Cancer (2025 revision), NCCN Guidelines for Patients, and ESMO Patient Guides are freely available online.",
+          },
+          {
+            name: "International",
+            text: "American Cancer Society, Breastcancer.org, and Susan G. Komen have Spanish-language sections with up-to-date, oncologist-reviewed information.",
+          },
+          {
+            name: "How to spot reliable information",
+            text: "Look for recent dates (2 years or less), visible medical authorship, cited sources, and avoid sites promising miracle cures or selling products.",
           },
         ],
+      },
+    ] as InfoCard[],
+
+    askTitle: "Questions you can ask AnaLuz",
+    askSub: "Tap any to open the chat. AnaLuz answers warmly, with references.",
+    askGoToChat: "Talk to AnaLuz",
+    askExamples: [
+      "What does a BIRADS 4 result mean?",
+      "What questions should I ask my oncologist at the first visit?",
+      "How can I prepare emotionally before a biopsy?",
+      "What side effects might chemotherapy have?",
+      "How do I take care of my mental health during treatment?",
+      "Where can I find support groups near me?",
+    ],
+
+    detectionTitle: "About early detection",
+    detectionIntro:
+      "Early detection is the most powerful tool we have. Three simple habits that can make the difference.",
+    detectionCards: [
+      {
+        title: "Monthly self-exam",
+        intro:
+          "Knowing your body is the first step. Doing it monthly helps you notice changes early.",
+        items: [
+          {
+            name: "When to do it",
+            text: "Between days 7 and 10 after the first day of your period, when breasts are less tender. If you no longer menstruate, pick the same day each month.",
+          },
+          {
+            name: "How to do it",
+            text: "In three moments: in front of the mirror observing shape and skin, lying down using circular palpation, and in the shower with soapy skin.",
+          },
+          {
+            name: "What to look for",
+            text: "Lumps or thickening, skin changes (dimples, redness, scaling), nipple discharge, nipple retraction, or recent asymmetry.",
+          },
+        ],
+        footer:
+          "If you find something different, don't panic — most findings are benign. But do schedule a visit soon.",
       },
       {
-        title: "What's new in 2026",
-        intro: "The latest in breast oncology.",
+        title: "Mammography",
+        intro:
+          "It is the most effective imaging study to detect breast cancer before it can be felt.",
         items: [
           {
-            name: "Precision medicine",
-            text: "Molecular guidance for personalized treatment for each patient.",
+            name: "Starting at age 40",
+            text: "The general recommendation in Mexico is every 1 to 2 years between ages 40 and 49, and every 1 to 2 years from age 50. Your doctor may adjust frequency.",
           },
           {
-            name: "Artificial intelligence",
-            text: "AI models assessing 5-year risk from mammograms.",
+            name: "If there is family history",
+            text: "If your mother, sister, or daughter had breast cancer, start 10 years before your relative's age at diagnosis — and never before age 30. Consider genetic counseling.",
           },
           {
-            name: "New combinations",
-            text: "Sacituzumab govitecan + pembrolizumab as a preferred option in metastatic triple-negative breast cancer.",
+            name: "What to expect",
+            text: "The study takes 15 to 20 minutes. There is a brief compression of each breast (uncomfortable, not painful) and results usually arrive in 5 to 10 days.",
+          },
+        ],
+        footer:
+          "A BIRADS 1 or 2 mammogram is normal. BIRADS 3 needs follow-up, and BIRADS 4 or 5 means further studies are required.",
+      },
+      {
+        title: "Continuous follow-up",
+        intro:
+          "After treatment or a previous finding, regular surveillance protects your long-term well-being.",
+        items: [
+          {
+            name: "First 3 years",
+            text: "Visits with your oncologist every 3 to 6 months. This is the period when any sign of recurrence is monitored most closely.",
           },
           {
-            name: "De-escalation",
-            text: "In postmenopausal patients with small HR+/HER2- tumors, omitting sentinel node biopsy is considered.",
+            name: "Years 4 and 5",
+            text: "Visits every 6 to 12 months, with annual mammography of the conserved and contralateral breast. Tumor markers only if your doctor indicates them.",
+          },
+          {
+            name: "From year 5 onward",
+            text: "Yearly visits and yearly mammography for life. Also care for bones, heart, and mental health — long-term effects of some treatments.",
+          },
+          {
+            name: "Protective habits",
+            text: "Moderate physical activity, vegetable-rich diet, healthy weight, limited alcohol, and not smoking all reduce the risk of recurrence.",
           },
         ],
       },
-    ] as ProtocolGroup[],
-    protocolsDisclaimer:
-      "Every case should be evaluated by an oncologist to determine the right protocol.",
+    ] as InfoCard[],
   },
 };
 
 export default function Home() {
   const [lang, setLang] = useState<"es" | "en">("es");
   const [stepsOpen, setStepsOpen] = useState(false);
-  const [protocolsOpen, setProtocolsOpen] = useState(false);
   const t = content[lang];
 
-  // Rotate between rose, peach, and teal for visual rhythm
+  // Rotate between rose, peach, and teal for visual rhythm on numbered lists
   const stepAccent = (i: number) => {
     const palette = [
       "bg-primary/10 text-primary",
@@ -281,13 +443,24 @@ export default function Home() {
     return palette[i % palette.length];
   };
 
-  // Section badge colors for the protocol groups
-  const groupAccent = (i: number) => {
+  // Icons for the "After consultation" cards
+  const afterIcons = [Compass, HelpCircle, BookOpen];
+  // Icons for the "Detection" cards
+  const detectionIcons = [Hand, Activity, CalendarCheck];
+  // Subtle background tint per card so the section reads as a sequence
+  const cardTint = (i: number) => {
     const palette = [
-      "bg-primary/10 text-primary",
+      "bg-primary/5",
+      "bg-accent/5",
+      "bg-secondary/20",
+    ];
+    return palette[i % palette.length];
+  };
+  const iconTint = (i: number) => {
+    const palette = [
+      "bg-primary/15 text-primary",
       "bg-accent/15 text-accent",
-      "bg-secondary/50 text-[color:var(--primary-hover)]",
-      "bg-primary/15 text-[color:var(--primary-hover)]",
+      "bg-secondary/60 text-[color:var(--primary-hover)]",
     ];
     return palette[i % palette.length];
   };
@@ -426,110 +599,214 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Treatment protocols — collapsible card */}
-        <section className="mt-5">
-          <div className="overflow-hidden rounded-3xl border border-border bg-card/80 shadow-sm backdrop-blur">
-            <button
-              type="button"
-              onClick={() => setProtocolsOpen((v) => !v)}
-              aria-expanded={protocolsOpen}
-              aria-controls="protocols-panel"
-              className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-secondary/20 sm:px-8"
-            >
-              <span>
-                <span className="block font-serif text-2xl font-medium text-[color:var(--primary-hover)]">
-                  {t.protocols}
-                </span>
-                <span className="mt-1 block text-sm text-muted-foreground">
-                  {t.protocolsSub}
-                </span>
-              </span>
-              <span className="flex shrink-0 items-center gap-2">
-                <span className="hidden text-xs font-medium text-muted-foreground sm:inline">
-                  {protocolsOpen ? t.protocolsToggleClose : t.protocolsToggleOpen}
-                </span>
-                <span
-                  className={`flex h-9 w-9 items-center justify-center rounded-full bg-accent/15 text-accent transition-transform duration-300 ${
-                    protocolsOpen ? "rotate-180" : ""
-                  }`}
+        {/* AFTER THE CONSULTATION */}
+        <section className="mt-12">
+          <div className="text-center">
+            <p className="font-serif text-xs uppercase tracking-[0.2em] text-accent">
+              {lang === "es" ? "Acompañamiento" : "Companion"}
+            </p>
+            <h2 className="mt-2 font-serif text-2xl font-medium text-[color:var(--primary-hover)] sm:text-3xl">
+              {t.afterTitle}
+            </h2>
+            <p className="mt-3 mx-auto max-w-xl text-sm leading-relaxed text-muted-foreground text-pretty">
+              {t.afterIntro}
+            </p>
+          </div>
+
+          {/* Warning note */}
+          <div
+            role="note"
+            aria-label={t.afterWarningTitle}
+            className="mt-6 flex items-start gap-3 rounded-2xl border border-border bg-secondary/30 px-5 py-4"
+          >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary/60 text-[color:var(--primary-hover)]">
+              <ShieldAlert className="h-4 w-4" aria-hidden />
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-foreground">
+                {t.afterWarningTitle}
+              </p>
+              <p className="mt-0.5 text-sm leading-relaxed text-foreground/80">
+                {t.afterWarning}
+              </p>
+            </div>
+          </div>
+
+          {/* Cards */}
+          <div className="mt-6 flex flex-col gap-5">
+            {t.afterCards.map((card, ci) => {
+              const Icon = afterIcons[ci % afterIcons.length];
+              return (
+                <article
+                  key={ci}
+                  className={`rounded-3xl border border-border ${cardTint(
+                    ci
+                  )} p-6 shadow-sm backdrop-blur sm:p-7`}
                 >
-                  <ChevronDown className="h-4 w-4" aria-hidden />
-                </span>
-              </span>
-            </button>
-
-            <div
-              id="protocols-panel"
-              className={`grid transition-all duration-300 ease-out ${
-                protocolsOpen
-                  ? "grid-rows-[1fr] opacity-100"
-                  : "grid-rows-[0fr] opacity-0"
-              }`}
-            >
-              <div className="overflow-hidden">
-                <div className="border-t border-border px-6 py-6 sm:px-8">
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {t.protocolsIntro}
-                  </p>
-
-                  <div className="mt-6 flex flex-col gap-6">
-                    {t.protocolGroups.map((group, gi) => (
-                      <div
-                        key={gi}
-                        className="rounded-2xl border border-border bg-background/60 p-5"
-                      >
-                        <div className="flex items-start gap-3">
-                          <span
-                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-serif text-sm font-semibold ${groupAccent(
-                              gi
-                            )}`}
-                          >
-                            {gi + 1}
-                          </span>
-                          <div>
-                            <h3 className="font-serif text-lg font-medium text-[color:var(--primary-hover)]">
-                              {group.title}
-                            </h3>
-                            {group.intro && (
-                              <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
-                                {group.intro}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-
-                        <ul className="mt-4 flex flex-col gap-3">
-                          {group.items.map((item, ii) => (
-                            <li
-                              key={ii}
-                              className="flex items-start gap-3 border-l-2 border-primary/30 pl-3"
-                            >
-                              <div>
-                                <p className="text-sm font-semibold text-foreground">
-                                  {item.name}
-                                </p>
-                                <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
-                                  {item.text}
-                                </p>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
+                  <div className="flex items-start gap-4">
+                    <span
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${iconTint(
+                        ci
+                      )}`}
+                      aria-hidden
+                    >
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <h3 className="font-serif text-xl font-medium text-[color:var(--primary-hover)]">
+                        {card.title}
+                      </h3>
+                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                        {card.intro}
+                      </p>
+                    </div>
                   </div>
 
-                  <p className="mt-6 rounded-xl bg-secondary/30 px-4 py-3 text-xs leading-relaxed text-foreground/80">
-                    {t.protocolsDisclaimer}
-                  </p>
-                </div>
-              </div>
-            </div>
+                  <ul className="mt-5 flex flex-col gap-3.5">
+                    {card.items.map((item, ii) => (
+                      <li
+                        key={ii}
+                        className="border-l-2 border-primary/30 pl-4"
+                      >
+                        <p className="text-sm font-semibold text-foreground">
+                          {item.name}
+                        </p>
+                        <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
+                          {item.text}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* QUESTIONS YOU CAN ASK ANALUZ */}
+        <section className="mt-12">
+          <div className="text-center">
+            <p className="font-serif text-xs uppercase tracking-[0.2em] text-accent">
+              {lang === "es" ? "Conversación" : "Conversation"}
+            </p>
+            <h2 className="mt-2 font-serif text-2xl font-medium text-[color:var(--primary-hover)] sm:text-3xl">
+              {t.askTitle}
+            </h2>
+            <p className="mt-3 mx-auto max-w-xl text-sm leading-relaxed text-muted-foreground text-pretty">
+              {t.askSub}
+            </p>
+          </div>
+
+          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+            {t.askExamples.map((q, i) => (
+              <li key={i}>
+                <a
+                  href={`/chat?q=${encodeURIComponent(q)}`}
+                  className="group flex h-full items-start gap-3 rounded-2xl border border-border bg-card/80 px-4 py-3.5 text-left shadow-sm backdrop-blur transition-colors hover:border-primary/40 hover:bg-card"
+                >
+                  <span
+                    className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${iconTint(
+                      i
+                    )}`}
+                    aria-hidden
+                  >
+                    <Sparkles className="h-3.5 w-3.5" />
+                  </span>
+                  <span className="flex-1 text-sm leading-snug text-foreground">
+                    {q}
+                  </span>
+                  <ArrowRight
+                    className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary"
+                    aria-hidden
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-5 flex justify-center">
+            <a
+              href="/chat"
+              className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-card/80 px-5 py-2.5 text-sm font-medium text-primary shadow-sm backdrop-blur transition-colors hover:bg-primary hover:text-primary-foreground"
+            >
+              {t.askGoToChat}
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </a>
+          </div>
+        </section>
+
+        {/* ABOUT EARLY DETECTION */}
+        <section className="mt-12">
+          <div className="text-center">
+            <p className="font-serif text-xs uppercase tracking-[0.2em] text-accent">
+              {lang === "es" ? "Prevención" : "Prevention"}
+            </p>
+            <h2 className="mt-2 font-serif text-2xl font-medium text-[color:var(--primary-hover)] sm:text-3xl">
+              {t.detectionTitle}
+            </h2>
+            <p className="mt-3 mx-auto max-w-xl text-sm leading-relaxed text-muted-foreground text-pretty">
+              {t.detectionIntro}
+            </p>
+          </div>
+
+          <div className="mt-6 flex flex-col gap-5">
+            {t.detectionCards.map((card, ci) => {
+              const Icon = detectionIcons[ci % detectionIcons.length];
+              return (
+                <article
+                  key={ci}
+                  className={`rounded-3xl border border-border ${cardTint(
+                    ci
+                  )} p-6 shadow-sm backdrop-blur sm:p-7`}
+                >
+                  <div className="flex items-start gap-4">
+                    <span
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${iconTint(
+                        ci
+                      )}`}
+                      aria-hidden
+                    >
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <h3 className="font-serif text-xl font-medium text-[color:var(--primary-hover)]">
+                        {card.title}
+                      </h3>
+                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                        {card.intro}
+                      </p>
+                    </div>
+                  </div>
+
+                  <ul className="mt-5 flex flex-col gap-3.5">
+                    {card.items.map((item, ii) => (
+                      <li
+                        key={ii}
+                        className="border-l-2 border-primary/30 pl-4"
+                      >
+                        <p className="text-sm font-semibold text-foreground">
+                          {item.name}
+                        </p>
+                        <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
+                          {item.text}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {card.footer && (
+                    <p className="mt-5 rounded-xl bg-card/80 px-4 py-3 text-xs leading-relaxed text-foreground/80">
+                      {card.footer}
+                    </p>
+                  )}
+                </article>
+              );
+            })}
           </div>
         </section>
 
         {/* CTAs */}
-        <section className="mt-8 flex flex-col gap-3">
+        <section className="mt-12 flex flex-col gap-3">
           <a
             href="/chat"
             className="block w-full rounded-2xl bg-primary px-6 py-3.5 text-center text-base font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"

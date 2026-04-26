@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ComponentType, type ReactNode } from "react";
 import Image from "next/image";
 import {
   ChevronDown,
@@ -34,8 +34,8 @@ const content = {
     viewDemo: "Ver panel de demostración",
     disclaimer: "AnaLuz no reemplaza a tu médico. Su rol es acompañarte.",
     langLabel: "English",
-    toggleOpen: "Mostrar pasos",
-    toggleClose: "Ocultar pasos",
+    toggleOpen: "Mostrar",
+    toggleClose: "Ocultar",
     steps: [
       {
         title: "Resultado disponible",
@@ -59,7 +59,6 @@ const content = {
       },
     ],
 
-    // Sección: Después de la consulta
     afterTitle: "Después de la consulta",
     afterIntro:
       "Salir del consultorio con un diagnóstico o un resultado anormal puede sentirse abrumador. Aquí encontrarás información clara para entender lo que sigue, resolver dudas comunes y apoyarte en fuentes confiables — siempre de la mano de tu médico.",
@@ -141,7 +140,6 @@ const content = {
       },
     ] as InfoCard[],
 
-    // Sección: Preguntas que puedes hacerle a AnaLuz
     askTitle: "Preguntas que puedes hacerle a AnaLuz",
     askSub:
       "Toca cualquiera para abrir el chat. AnaLuz responde con calidez y referencias.",
@@ -155,7 +153,6 @@ const content = {
       "¿Dónde puedo encontrar grupos de apoyo cerca de mí?",
     ],
 
-    // Sección: Detección oportuna
     detectionTitle: "Sobre la detección oportuna",
     detectionIntro:
       "La detección temprana es la herramienta más poderosa que tenemos. Tres hábitos sencillos que pueden hacer la diferencia.",
@@ -237,8 +234,8 @@ const content = {
     viewDemo: "View demo dashboard",
     disclaimer: "AnaLuz does not replace your doctor. Her role is to support you.",
     langLabel: "Español",
-    toggleOpen: "Show steps",
-    toggleClose: "Hide steps",
+    toggleOpen: "Show",
+    toggleClose: "Hide",
     steps: [
       {
         title: "Result available",
@@ -428,9 +425,104 @@ const content = {
   },
 };
 
+type IconType = ComponentType<{ className?: string }>;
+
+type CollapsibleProps = {
+  id: string;
+  title: string;
+  subtitle?: string;
+  Icon?: IconType;
+  iconClassName?: string;
+  containerClassName?: string;
+  toggleOpenLabel: string;
+  toggleCloseLabel: string;
+  defaultOpen?: boolean;
+  children: ReactNode;
+};
+
+function Collapsible({
+  id,
+  title,
+  subtitle,
+  Icon,
+  iconClassName,
+  containerClassName,
+  toggleOpenLabel,
+  toggleCloseLabel,
+  defaultOpen = false,
+  children,
+}: CollapsibleProps) {
+  const [open, setOpen] = useState(defaultOpen);
+  const panelId = `${id}-panel`;
+  return (
+    <div
+      className={`overflow-hidden rounded-3xl border border-border shadow-sm backdrop-blur ${
+        containerClassName ?? "bg-card/80"
+      }`}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls={panelId}
+        className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-secondary/20 sm:px-7"
+      >
+        <span className="flex min-w-0 items-start gap-4">
+          {Icon && (
+            <span
+              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${
+                iconClassName ?? "bg-primary/15 text-primary"
+              }`}
+              aria-hidden
+            >
+              <Icon className="h-5 w-5" />
+            </span>
+          )}
+          <span className="min-w-0">
+            <span className="block font-serif text-xl font-medium text-[color:var(--primary-hover)] sm:text-[1.35rem]">
+              {title}
+            </span>
+            {subtitle && (
+              <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+                {subtitle}
+              </span>
+            )}
+          </span>
+        </span>
+        <span className="flex shrink-0 items-center gap-2">
+          <span className="hidden text-xs font-medium text-muted-foreground sm:inline">
+            {open ? toggleCloseLabel : toggleOpenLabel}
+          </span>
+          <span
+            className={`flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform duration-300 ${
+              open ? "rotate-180" : ""
+            }`}
+          >
+            <ChevronDown className="h-4 w-4" aria-hidden />
+          </span>
+        </span>
+      </button>
+
+      <div
+        id={panelId}
+        className={`grid transition-all duration-300 ease-out ${
+          open
+            ? "grid-rows-[1fr] opacity-100"
+            : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className="border-t border-border px-6 py-6 sm:px-7">
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [lang, setLang] = useState<"es" | "en">("es");
-  const [stepsOpen, setStepsOpen] = useState(false);
   const t = content[lang];
 
   // Rotate between rose, peach, and teal for visual rhythm on numbered lists
@@ -444,16 +536,12 @@ export default function Home() {
   };
 
   // Icons for the "After consultation" cards
-  const afterIcons = [Compass, HelpCircle, BookOpen];
+  const afterIcons: IconType[] = [Compass, HelpCircle, BookOpen];
   // Icons for the "Detection" cards
-  const detectionIcons = [Hand, Activity, CalendarCheck];
+  const detectionIcons: IconType[] = [Hand, Activity, CalendarCheck];
   // Subtle background tint per card so the section reads as a sequence
   const cardTint = (i: number) => {
-    const palette = [
-      "bg-primary/5",
-      "bg-accent/5",
-      "bg-secondary/20",
-    ];
+    const palette = ["bg-primary/5", "bg-accent/5", "bg-secondary/20"];
     return palette[i % palette.length];
   };
   const iconTint = (i: number) => {
@@ -532,71 +620,37 @@ export default function Home() {
           </div>
         </section>
 
-        {/* How it works — collapsible card */}
+        {/* How it works — collapsible */}
         <section className="mt-10">
-          <div className="overflow-hidden rounded-3xl border border-border bg-card/80 shadow-sm backdrop-blur">
-            <button
-              type="button"
-              onClick={() => setStepsOpen((v) => !v)}
-              aria-expanded={stepsOpen}
-              aria-controls="how-it-works-panel"
-              className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-secondary/20 sm:px-8"
-            >
-              <span>
-                <span className="block font-serif text-2xl font-medium text-[color:var(--primary-hover)]">
-                  {t.howItWorks}
-                </span>
-                <span className="mt-1 block text-sm text-muted-foreground">
-                  {t.howItWorksSub}
-                </span>
-              </span>
-              <span className="flex shrink-0 items-center gap-2">
-                <span className="hidden text-xs font-medium text-muted-foreground sm:inline">
-                  {stepsOpen ? t.toggleClose : t.toggleOpen}
-                </span>
-                <span
-                  className={`flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform duration-300 ${
-                    stepsOpen ? "rotate-180" : ""
-                  }`}
-                >
-                  <ChevronDown className="h-4 w-4" aria-hidden />
-                </span>
-              </span>
-            </button>
-
-            <div
-              id="how-it-works-panel"
-              className={`grid transition-all duration-300 ease-out ${
-                stepsOpen
-                  ? "grid-rows-[1fr] opacity-100"
-                  : "grid-rows-[0fr] opacity-0"
-              }`}
-            >
-              <div className="overflow-hidden">
-                <ol className="flex flex-col gap-5 border-t border-border px-6 py-6 sm:px-8">
-                  {t.steps.map((step, i) => (
-                    <li key={i} className="flex items-start gap-4">
-                      <span
-                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-serif text-base font-semibold ${stepAccent(
-                          i
-                        )}`}
-                      >
-                        {i + 1}
-                      </span>
-                      <div className="pt-0.5">
-                        <p className="text-sm font-semibold text-foreground">
-                          {step.title}
-                        </p>
-                        <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
-                          {step.text}
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </div>
-          </div>
+          <Collapsible
+            id="how-it-works"
+            title={t.howItWorks}
+            subtitle={t.howItWorksSub}
+            toggleOpenLabel={t.toggleOpen}
+            toggleCloseLabel={t.toggleClose}
+          >
+            <ol className="flex flex-col gap-5">
+              {t.steps.map((step, i) => (
+                <li key={i} className="flex items-start gap-4">
+                  <span
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-serif text-base font-semibold ${stepAccent(
+                      i
+                    )}`}
+                  >
+                    {i + 1}
+                  </span>
+                  <div className="pt-0.5">
+                    <p className="text-sm font-semibold text-foreground">
+                      {step.title}
+                    </p>
+                    <p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
+                      {step.text}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </Collapsible>
         </section>
 
         {/* AFTER THE CONSULTATION */}
@@ -608,61 +662,52 @@ export default function Home() {
             <h2 className="mt-2 font-serif text-2xl font-medium text-[color:var(--primary-hover)] sm:text-3xl">
               {t.afterTitle}
             </h2>
-            <p className="mt-3 mx-auto max-w-xl text-sm leading-relaxed text-muted-foreground text-pretty">
-              {t.afterIntro}
-            </p>
           </div>
 
-          {/* Warning note */}
-          <div
-            role="note"
-            aria-label={t.afterWarningTitle}
-            className="mt-6 flex items-start gap-3 rounded-2xl border border-border bg-secondary/30 px-5 py-4"
-          >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary/60 text-[color:var(--primary-hover)]">
-              <ShieldAlert className="h-4 w-4" aria-hidden />
-            </span>
-            <div>
-              <p className="text-sm font-semibold text-foreground">
-                {t.afterWarningTitle}
-              </p>
-              <p className="mt-0.5 text-sm leading-relaxed text-foreground/80">
-                {t.afterWarning}
-              </p>
-            </div>
+          {/* Intro — collapsible */}
+          <div className="mt-6">
+            <Collapsible
+              id="after-intro"
+              title={lang === "es" ? "Una introducción" : "A short intro"}
+              Icon={ShieldAlert}
+              iconClassName="bg-secondary/60 text-[color:var(--primary-hover)]"
+              containerClassName="bg-secondary/30"
+              toggleOpenLabel={t.toggleOpen}
+              toggleCloseLabel={t.toggleClose}
+            >
+              <div className="flex flex-col gap-4">
+                <p className="text-sm leading-relaxed text-foreground/85">
+                  {t.afterIntro}
+                </p>
+                <div className="rounded-2xl border border-border bg-card/70 px-4 py-3">
+                  <p className="text-sm font-semibold text-foreground">
+                    {t.afterWarningTitle}
+                  </p>
+                  <p className="mt-0.5 text-sm leading-relaxed text-foreground/80">
+                    {t.afterWarning}
+                  </p>
+                </div>
+              </div>
+            </Collapsible>
           </div>
 
-          {/* Cards */}
-          <div className="mt-6 flex flex-col gap-5">
+          {/* Cards — each is its own collapsible */}
+          <div className="mt-5 flex flex-col gap-4">
             {t.afterCards.map((card, ci) => {
               const Icon = afterIcons[ci % afterIcons.length];
               return (
-                <article
+                <Collapsible
                   key={ci}
-                  className={`rounded-3xl border border-border ${cardTint(
-                    ci
-                  )} p-6 shadow-sm backdrop-blur sm:p-7`}
+                  id={`after-${ci}`}
+                  title={card.title}
+                  subtitle={card.intro}
+                  Icon={Icon}
+                  iconClassName={iconTint(ci)}
+                  containerClassName={cardTint(ci)}
+                  toggleOpenLabel={t.toggleOpen}
+                  toggleCloseLabel={t.toggleClose}
                 >
-                  <div className="flex items-start gap-4">
-                    <span
-                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${iconTint(
-                        ci
-                      )}`}
-                      aria-hidden
-                    >
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <h3 className="font-serif text-xl font-medium text-[color:var(--primary-hover)]">
-                        {card.title}
-                      </h3>
-                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                        {card.intro}
-                      </p>
-                    </div>
-                  </div>
-
-                  <ul className="mt-5 flex flex-col gap-3.5">
+                  <ul className="flex flex-col gap-3.5">
                     {card.items.map((item, ii) => (
                       <li
                         key={ii}
@@ -677,62 +722,61 @@ export default function Home() {
                       </li>
                     ))}
                   </ul>
-                </article>
+                </Collapsible>
               );
             })}
           </div>
         </section>
 
-        {/* QUESTIONS YOU CAN ASK ANALUZ */}
+        {/* QUESTIONS YOU CAN ASK ANALUZ — collapsible */}
         <section className="mt-12">
-          <div className="text-center">
-            <p className="font-serif text-xs uppercase tracking-[0.2em] text-accent">
-              {lang === "es" ? "Conversación" : "Conversation"}
-            </p>
-            <h2 className="mt-2 font-serif text-2xl font-medium text-[color:var(--primary-hover)] sm:text-3xl">
-              {t.askTitle}
-            </h2>
-            <p className="mt-3 mx-auto max-w-xl text-sm leading-relaxed text-muted-foreground text-pretty">
-              {t.askSub}
-            </p>
-          </div>
-
-          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-            {t.askExamples.map((q, i) => (
-              <li key={i}>
-                <a
-                  href={`/chat?q=${encodeURIComponent(q)}`}
-                  className="group flex h-full items-start gap-3 rounded-2xl border border-border bg-card/80 px-4 py-3.5 text-left shadow-sm backdrop-blur transition-colors hover:border-primary/40 hover:bg-card"
-                >
-                  <span
-                    className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${iconTint(
-                      i
-                    )}`}
-                    aria-hidden
+          <Collapsible
+            id="ask-questions"
+            title={t.askTitle}
+            subtitle={t.askSub}
+            Icon={Sparkles}
+            iconClassName="bg-accent/15 text-accent"
+            containerClassName="bg-accent/5"
+            toggleOpenLabel={t.toggleOpen}
+            toggleCloseLabel={t.toggleClose}
+          >
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {t.askExamples.map((q, i) => (
+                <li key={i}>
+                  <a
+                    href={`/chat?q=${encodeURIComponent(q)}`}
+                    className="group flex h-full items-start gap-3 rounded-2xl border border-border bg-card/80 px-4 py-3.5 text-left shadow-sm backdrop-blur transition-colors hover:border-primary/40 hover:bg-card"
                   >
-                    <Sparkles className="h-3.5 w-3.5" />
-                  </span>
-                  <span className="flex-1 text-sm leading-snug text-foreground">
-                    {q}
-                  </span>
-                  <ArrowRight
-                    className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary"
-                    aria-hidden
-                  />
-                </a>
-              </li>
-            ))}
-          </ul>
+                    <span
+                      className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${iconTint(
+                        i
+                      )}`}
+                      aria-hidden
+                    >
+                      <Sparkles className="h-3.5 w-3.5" />
+                    </span>
+                    <span className="flex-1 text-sm leading-snug text-foreground">
+                      {q}
+                    </span>
+                    <ArrowRight
+                      className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary"
+                      aria-hidden
+                    />
+                  </a>
+                </li>
+              ))}
+            </ul>
 
-          <div className="mt-5 flex justify-center">
-            <a
-              href="/chat"
-              className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-card/80 px-5 py-2.5 text-sm font-medium text-primary shadow-sm backdrop-blur transition-colors hover:bg-primary hover:text-primary-foreground"
-            >
-              {t.askGoToChat}
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </a>
-          </div>
+            <div className="mt-5 flex justify-center">
+              <a
+                href="/chat"
+                className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-card/80 px-5 py-2.5 text-sm font-medium text-primary shadow-sm backdrop-blur transition-colors hover:bg-primary hover:text-primary-foreground"
+              >
+                {t.askGoToChat}
+                <ArrowRight className="h-4 w-4" aria-hidden />
+              </a>
+            </div>
+          </Collapsible>
         </section>
 
         {/* ABOUT EARLY DETECTION */}
@@ -744,41 +788,42 @@ export default function Home() {
             <h2 className="mt-2 font-serif text-2xl font-medium text-[color:var(--primary-hover)] sm:text-3xl">
               {t.detectionTitle}
             </h2>
-            <p className="mt-3 mx-auto max-w-xl text-sm leading-relaxed text-muted-foreground text-pretty">
-              {t.detectionIntro}
-            </p>
           </div>
 
-          <div className="mt-6 flex flex-col gap-5">
+          {/* Intro — collapsible */}
+          <div className="mt-6">
+            <Collapsible
+              id="detection-intro"
+              title={lang === "es" ? "Por qué importa" : "Why it matters"}
+              Icon={Activity}
+              iconClassName="bg-accent/15 text-accent"
+              containerClassName="bg-accent/5"
+              toggleOpenLabel={t.toggleOpen}
+              toggleCloseLabel={t.toggleClose}
+            >
+              <p className="text-sm leading-relaxed text-foreground/85">
+                {t.detectionIntro}
+              </p>
+            </Collapsible>
+          </div>
+
+          {/* Cards — each is its own collapsible */}
+          <div className="mt-5 flex flex-col gap-4">
             {t.detectionCards.map((card, ci) => {
               const Icon = detectionIcons[ci % detectionIcons.length];
               return (
-                <article
+                <Collapsible
                   key={ci}
-                  className={`rounded-3xl border border-border ${cardTint(
-                    ci
-                  )} p-6 shadow-sm backdrop-blur sm:p-7`}
+                  id={`detection-${ci}`}
+                  title={card.title}
+                  subtitle={card.intro}
+                  Icon={Icon}
+                  iconClassName={iconTint(ci)}
+                  containerClassName={cardTint(ci)}
+                  toggleOpenLabel={t.toggleOpen}
+                  toggleCloseLabel={t.toggleClose}
                 >
-                  <div className="flex items-start gap-4">
-                    <span
-                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${iconTint(
-                        ci
-                      )}`}
-                      aria-hidden
-                    >
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <h3 className="font-serif text-xl font-medium text-[color:var(--primary-hover)]">
-                        {card.title}
-                      </h3>
-                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                        {card.intro}
-                      </p>
-                    </div>
-                  </div>
-
-                  <ul className="mt-5 flex flex-col gap-3.5">
+                  <ul className="flex flex-col gap-3.5">
                     {card.items.map((item, ii) => (
                       <li
                         key={ii}
@@ -799,7 +844,7 @@ export default function Home() {
                       {card.footer}
                     </p>
                   )}
-                </article>
+                </Collapsible>
               );
             })}
           </div>

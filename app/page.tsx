@@ -67,29 +67,6 @@ const content = {
       "AnaLuz ofrece información general y acompañamiento emocional. No diagnostica, no prescribe y no reemplaza la opinión de tu equipo médico. Cualquier decisión clínica debe tomarse en consulta con tu oncólogo o ginecólogo.",
     afterCards: [
       {
-        title: "Entendiendo los siguientes pasos",
-        intro:
-          "Después de un resultado anormal o un diagnóstico, el camino se vuelve más claro cuando sabes qué esperar.",
-        items: [
-          {
-            name: "Estudios complementarios",
-            text: "Tu médico puede pedir ultrasonido, resonancia o una biopsia para confirmar y caracterizar el hallazgo. Suele tomar de 1 a 3 semanas tener todos los resultados.",
-          },
-          {
-            name: "Comité multidisciplinario",
-            text: "Tu caso se discute en un equipo formado por cirujano oncólogo, oncólogo médico, radioncólogo, patólogo y radiólogo. Juntos diseñan un plan a tu medida.",
-          },
-          {
-            name: "Plan personalizado",
-            text: "El tratamiento depende del subtipo molecular, el estadio y tu salud general. No hay dos planes iguales — el tuyo se construye específicamente para ti.",
-          },
-          {
-            name: "Tu red de apoyo",
-            text: "Además del equipo médico, tendrás acceso a enfermería oncológica, trabajo social, nutrición y psicooncología. Apóyate en todos ellos.",
-          },
-        ],
-      },
-      {
         title: "Preguntas frecuentes",
         intro: "Las dudas más comunes después de un diagnóstico inicial.",
         items: [
@@ -178,50 +155,6 @@ const content = {
         footer:
           "Si encuentras algo distinto, no entres en pánico — la mayoría de los hallazgos son benignos. Pero sí agenda una consulta pronto.",
       },
-      {
-        title: "Mastografía",
-        intro:
-          "Es el estudio de imagen más efectivo para detectar el cáncer de mama antes de que se sienta.",
-        items: [
-          {
-            name: "A partir de los 40 años",
-            text: "La recomendación general en México es realizarla cada 1 o 2 años entre los 40 y los 49 años, y cada 1 a 2 años a partir de los 50. Tu médico puede ajustar la frecuencia.",
-          },
-          {
-            name: "Si hay antecedentes familiares",
-            text: "Si tu madre, hermana o hija tuvo cáncer de mama, comienza 10 años antes de la edad de diagnóstico de tu familiar — y nunca antes de los 30. Considera asesoría genética.",
-          },
-          {
-            name: "Qué esperar",
-            text: "El estudio dura entre 15 y 20 minutos. Hay una compresión breve de cada seno (incómoda, no dolorosa) y los resultados suelen llegar en 5 a 10 días.",
-          },
-        ],
-        footer:
-          "Una mastografía con clasificación BIRADS 1 o 2 es normal. BIRADS 3 requiere seguimiento, y BIRADS 4 o 5 indica que hay que estudiar más a fondo.",
-      },
-      {
-        title: "Seguimiento continuo",
-        intro:
-          "Después de un tratamiento o un hallazgo previo, la vigilancia regular cuida tu bienestar a largo plazo.",
-        items: [
-          {
-            name: "Primeros 3 años",
-            text: "Consultas con tu oncólogo cada 3 a 6 meses. Es el periodo en que se vigila más de cerca cualquier signo de recurrencia.",
-          },
-          {
-            name: "Años 4 y 5",
-            text: "Consultas cada 6 a 12 meses, con mastografía anual del seno conservado y del contralateral. Marcadores tumorales solo si tu médico los indica.",
-          },
-          {
-            name: "A partir del año 5",
-            text: "Consultas anuales y mastografía anual de por vida. Cuida también huesos, corazón y salud mental — efectos a largo plazo de algunos tratamientos.",
-          },
-          {
-            name: "Hábitos protectores",
-            text: "Actividad física moderada, alimentación rica en vegetales, peso saludable, limitar alcohol y no fumar reducen el riesgo de recurrencia.",
-          },
-        ],
-      },
     ] as InfoCard[],
   },
   en: {
@@ -266,29 +199,6 @@ const content = {
     afterWarning:
       "AnaLuz provides general information and emotional companionship. She does not diagnose, prescribe, or replace your medical team's opinion. Every clinical decision must be made with your oncologist or gynecologist.",
     afterCards: [
-      {
-        title: "Understanding the next steps",
-        intro:
-          "After an abnormal result or a diagnosis, the path becomes clearer when you know what to expect.",
-        items: [
-          {
-            name: "Additional studies",
-            text: "Your doctor may order an ultrasound, MRI, or biopsy to confirm and characterize the finding. It usually takes 1 to 3 weeks to have all results.",
-          },
-          {
-            name: "Multidisciplinary committee",
-            text: "Your case is discussed by a team of surgical oncologist, medical oncologist, radiation oncologist, pathologist and radiologist. Together they design a plan tailored to you.",
-          },
-          {
-            name: "Personalized plan",
-            text: "Treatment depends on molecular subtype, stage, and your overall health. No two plans are alike — yours is built specifically for you.",
-          },
-          {
-            name: "Your support network",
-            text: "Beyond the medical team, you'll have access to oncology nursing, social work, nutrition, and psycho-oncology. Lean on all of them.",
-          },
-        ],
-      },
       {
         title: "Frequently asked questions",
         intro: "The most common doubts after an initial diagnosis.",
@@ -376,50 +286,6 @@ const content = {
         ],
         footer:
           "If you find something different, don't panic — most findings are benign. But do schedule a visit soon.",
-      },
-      {
-        title: "Mammography",
-        intro:
-          "It is the most effective imaging study to detect breast cancer before it can be felt.",
-        items: [
-          {
-            name: "Starting at age 40",
-            text: "The general recommendation in Mexico is every 1 to 2 years between ages 40 and 49, and every 1 to 2 years from age 50. Your doctor may adjust frequency.",
-          },
-          {
-            name: "If there is family history",
-            text: "If your mother, sister, or daughter had breast cancer, start 10 years before your relative's age at diagnosis — and never before age 30. Consider genetic counseling.",
-          },
-          {
-            name: "What to expect",
-            text: "The study takes 15 to 20 minutes. There is a brief compression of each breast (uncomfortable, not painful) and results usually arrive in 5 to 10 days.",
-          },
-        ],
-        footer:
-          "A BIRADS 1 or 2 mammogram is normal. BIRADS 3 needs follow-up, and BIRADS 4 or 5 means further studies are required.",
-      },
-      {
-        title: "Continuous follow-up",
-        intro:
-          "After treatment or a previous finding, regular surveillance protects your long-term well-being.",
-        items: [
-          {
-            name: "First 3 years",
-            text: "Visits with your oncologist every 3 to 6 months. This is the period when any sign of recurrence is monitored most closely.",
-          },
-          {
-            name: "Years 4 and 5",
-            text: "Visits every 6 to 12 months, with annual mammography of the conserved and contralateral breast. Tumor markers only if your doctor indicates them.",
-          },
-          {
-            name: "From year 5 onward",
-            text: "Yearly visits and yearly mammography for life. Also care for bones, heart, and mental health — long-term effects of some treatments.",
-          },
-          {
-            name: "Protective habits",
-            text: "Moderate physical activity, vegetable-rich diet, healthy weight, limited alcohol, and not smoking all reduce the risk of recurrence.",
-          },
-        ],
       },
     ] as InfoCard[],
   },
@@ -621,7 +487,7 @@ export default function Home() {
         </section>
 
         {/* How it works — collapsible */}
-        <section className="mt-10">
+        <section className="mt-12">
           <Collapsible
             id="how-it-works"
             title={t.howItWorks}
@@ -665,10 +531,10 @@ export default function Home() {
           </div>
 
           {/* Intro — collapsible */}
-          <div className="mt-6">
+          <div className="mt-4">
             <Collapsible
               id="after-intro"
-              title={lang === "es" ? "Una introducción" : "A short intro"}
+              title={lang === "es" ? "Nota importante" : "Important note"}
               Icon={ShieldAlert}
               iconClassName="bg-secondary/60 text-[color:var(--primary-hover)]"
               containerClassName="bg-secondary/30"
@@ -692,7 +558,7 @@ export default function Home() {
           </div>
 
           {/* Cards — each is its own collapsible */}
-          <div className="mt-5 flex flex-col gap-4">
+          <div className="mt-4 flex flex-col gap-4">
             {t.afterCards.map((card, ci) => {
               const Icon = afterIcons[ci % afterIcons.length];
               return (
@@ -790,25 +656,8 @@ export default function Home() {
             </h2>
           </div>
 
-          {/* Intro — collapsible */}
-          <div className="mt-6">
-            <Collapsible
-              id="detection-intro"
-              title={lang === "es" ? "Por qué importa" : "Why it matters"}
-              Icon={Activity}
-              iconClassName="bg-accent/15 text-accent"
-              containerClassName="bg-accent/5"
-              toggleOpenLabel={t.toggleOpen}
-              toggleCloseLabel={t.toggleClose}
-            >
-              <p className="text-sm leading-relaxed text-foreground/85">
-                {t.detectionIntro}
-              </p>
-            </Collapsible>
-          </div>
-
           {/* Cards — each is its own collapsible */}
-          <div className="mt-5 flex flex-col gap-4">
+          <div className="mt-4 flex flex-col gap-4">
             {t.detectionCards.map((card, ci) => {
               const Icon = detectionIcons[ci % detectionIcons.length];
               return (
